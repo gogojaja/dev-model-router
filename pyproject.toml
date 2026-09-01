@@ -26,6 +26,9 @@ dev-model-router = "cli:main"
 [tool.setuptools.packages.find]
 include = ["router*", "decomposer*", "executor*", "models*"]
 
+[tool.setuptools]
+py-modules = ["cli"]
+
 [tool.pytest.ini_options]
 testpaths = ["tests"]
 python_files = ["test_*.py"]

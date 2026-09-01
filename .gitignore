@@ -43,3 +43,14 @@ Thumbs.db
 
 # 模型缓存
 .cache/
+
+# 敏感文件
+.env
+.env.*
+*.key
+*.pem
+*.p12
+*.pfx
+*.credentials
+credentials.json
+service-account*.json

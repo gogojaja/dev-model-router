@@ -17,10 +17,11 @@ import json
 import sys
 from pathlib import Path
 
-from .router import ComplexityAssessor, ComplexityLevel, ModelSelector, ModelTier
-from .decomposer import DAGBuilder, TaskSplitter, DependencyAnalyzer
-from .executor import StagedExecutor, Assembler
-from .models import ModelRegistry
+from router import ComplexityAssessor, ComplexityLevel, ModelSelector, ModelTier
+from decomposer import DAGBuilder, TaskSplitter, DependencyAnalyzer
+from decomposer.dag_builder import DAG
+from executor import StagedExecutor, Assembler
+from models import ModelRegistry
 
 
 def cmd_assess(args):
@@ -177,7 +178,7 @@ def cmd_models(args):
 
 def cmd_cost(args):
     """查看成本报告"""
-    from .router.cost_optimizer import CostOptimizer
+    from router.cost_optimizer import CostOptimizer
 
     optimizer = CostOptimizer()
     report = optimizer.get_daily_report()

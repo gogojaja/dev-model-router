@@ -1,0 +1,30 @@
+﻿perspective,check_id,check_name,status,severity,evidence,confidence
+architect,ARC-CHK-01,模块边界与循环依赖,WARN,medium,executor三模块sys.path.insert hack(staged_executor.py:16-17);cli.py相对导入实测ImportError,high
+architect,ARC-CHK-02,接口契约一致性,FAIL,high,cli.py:105/132使用DAG未导入;__init__.py导出与公共返回类型脱节;split的strategy参数未使用,high
+architect,ARC-CHK-03,数据模型完整性,PASS,low,dataclass注解完整;DAG悬空依赖静默跳过,high
+architect,ARC-CHK-04,ADR与实现一致性,FAIL,high,ADR-002决策Click实现argparse;ADR-003决策asyncio实现ThreadPoolExecutor;组件设计接口签名大面积漂移,high
+architect,ARC-CHK-05,重复职责,FAIL,medium,DAGBuilder与TaskSplitter模板同构且SubTask产出无下游消费;模型目录双份维护已漂移,high
+code_reviewer,CR-001,编译通过性,PASS,无,19个py文件py_compile全部通过,high
+code_reviewer,CR-002,代码异味检查,PASS,无,无裸except/无TODO/无死代码标记,high
+code_reviewer,CR-003,CLI可运行性,FAIL,critical,python3 cli.py --help实测ImportError: attempted relative import with no known parent package(cli.py:20),high
+code_reviewer,CR-004,cmd_config实现,FAIL,medium,set操作为空实现仅打印提示;配置只读环境变量违反ADR-005 TOML决策,high
+code_reviewer,CR-005,未使用属性,FAIL,low,complexity.py:79 self._classifier赋值后从未使用,high
+security,SEC-01,机密泄露,FAIL,critical,.git/config两remote URL嵌入明文GitHub PAT与Gitee令牌,high
+security,SEC-02,提交历史敏感信息,PASS,无,git log -p --all过滤token/pat/secret零命中,high
+security,SEC-03,输入验证,WARN,medium,cost_optimizer.py:243/dag_builder.py:172/registry.py:173 json.load无异常处理,high
+security,SEC-04,路径安全,WARN,low,storage_path原样使用无白名单;本地CLI风险低,medium
+security,SEC-05,依赖固定,FAIL,medium,transformers>=4.30.0/torch>=2.0.0开区间无lockfile,high
+security,SEC-06,gitignore敏感文件,FAIL,high,git check-ignore .env test.key返回空;cli.py:234引导用户用.env存Key,high
+test_engineer,TE-01,测试可运行性,PASS,无,IT-01 9项/IT-02 10项/执行测试20项全绿可重复,high
+test_engineer,TE-02,断言质量,FAIL,high,test_it01.py:89执行失败也算通过;test_it01.py:101恒真断言;record()模式pytest下无assert构成假绿,high
+test_engineer,TE-03,异常路径覆盖,FAIL,high,仅1例空字符串;无无效输入/畸形DAG文件/除零分支测试,high
+test_engineer,TE-04,CLI层覆盖,FAIL,high,cli.py零测试且实测无法运行;TC-014~018直调底层组件属虚假覆盖,high
+test_engineer,TE-05,状态污染,PASS,low,无跨用例累积;预算告警为用例自身设计输出,high
+test_engineer,TE-06,E2E链路测试,FAIL,high,无task→assess→select→decompose→execute→assemble完整链路测试;DAG save/load往返零测试,high
+test_engineer,TE-07,覆盖估算,FAIL,medium,cli.py/DAG.save/load/ModelRegistry持久化/错误分支无测试;测试硬编码绝对路径,high
+test_engineer,TE-08,可重复性,ISSUE,medium,重跑两次diff一致但硬编码/Volumes/BR256G/dev-model-router路径,high
+performance,PERF-01,DAG构建基准,FAIL,无,100节点0.7ms/500节点3.2ms可接受,high
+performance,PERF-02,缓存写入基准,FAIL,medium,10000次set耗时3181ms;_evict每次set全表扫描+min()淘汰O(n),high
+performance,PERF-03,缓存读取基准,FAIL,无,10000次get 6.8ms,high
+performance,PERF-04,真实并发性,FAIL,medium,ThreadPoolExecutor真实并发但ADR-003宣称asyncio;execute_with_cache:189 next()线性查找构成O(n²),high
+performance,PERF-05,台账全量读,FAIL,low,_load_records每次调用全量读文件,medium
