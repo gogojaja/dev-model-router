@@ -1,0 +1,31 @@
+[build-system]
+requires = ["setuptools>=68.0", "wheel"]
+build-backend = "setuptools.build_meta"
+
+[project]
+name = "dev-model-router"
+version = "1.0.0"
+description = "多模型分层编排工具：高阶模型拆解任务→低阶模型执行子任务→高阶模型组装调试"
+readme = "README.md"
+license = {text = "MIT"}
+requires-python = ">=3.9"
+dependencies = [
+    "transformers>=4.30.0",
+    "torch>=2.0.0",
+]
+
+[project.optional-dependencies]
+dev = [
+    "pytest>=7.0",
+    "pytest-cov>=4.0",
+]
+
+[project.scripts]
+dev-model-router = "cli:main"
+
+[tool.setuptools.packages.find]
+include = ["router*", "decomposer*", "executor*", "models*"]
+
+[tool.pytest.ini_options]
+testpaths = ["tests"]
+python_files = ["test_*.py"]
