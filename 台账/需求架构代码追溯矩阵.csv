@@ -1,0 +1,17 @@
+需求编号,需求描述,架构决策,架构元素,代码模块,测试用例,状态
+REQ-FUNC-ROUTER-001,任务复杂度评估,ADR-006模块化,ComplexityAssessor,router/complexity.py,待编写,已定义
+REQ-FUNC-ROUTER-002,智能模型选择,ADR-006模块化+ADR-004模型抽象,ModelSelector,router/model_selector.py,待编写,已定义
+REQ-FUNC-ROUTER-003,DAG任务分解,ADR-006模块化,DAGBuilder,decomposer/dag_builder.py,待编写,已定义
+REQ-FUNC-ROUTER-004,分阶段执行,ADR-003并行+ADR-006模块化,StagedExecutor,executor/staged_executor.py,待编写,已定义
+REQ-FUNC-ROUTER-005,预算控制与成本追踪,ADR-007低成本+ADR-006模块化,CostOptimizer,router/cost_optimizer.py,待编写,已定义
+REQ-FUNC-ROUTER-006,结果组装,ADR-006模块化,Assembler,executor/assembler.py,待编写,已定义
+REQ-FUNC-CLI-001,assess命令,ADR-002 CLI+ADR-006模块化,cli.py assess,cli.py,待编写,已定义
+REQ-FUNC-CLI-002,select命令,ADR-002 CLI+ADR-006模块化,cli.py select,cli.py,待编写,已定义
+REQ-FUNC-CLI-003,decompose命令,ADR-002 CLI+ADR-006模块化,cli.py decompose,cli.py,待编写,已定义
+REQ-FUNC-CLI-004,execute命令,ADR-002 CLI+ADR-006模块化,cli.py execute,cli.py,待编写,已定义
+REQ-FUNC-CLI-005,assemble命令,ADR-002 CLI+ADR-006模块化,cli.py assemble,cli.py,待编写,已定义
+REQ-NFR-PERF-001,评估响应≤5s,ADR-001 Python,复杂度评估,tests/test_it01.py,已编写,已测试
+REQ-NFR-PERF-002,并行子任务≥10,ADR-003 asyncio,并行执行,tests/test_it01.py,已编写,已测试
+REQ-NFR-COST-001,低成本优先,ADR-007低成本,模型选择,tests/test_it01.py,已编写,已测试
+REQ-NFR-COMP-001,双平台兼容,ADR-001 Python,全模块,tests/test_it01.py,已编写,已测试
+REQ-NFR-MAIN-001,模块化设计,ADR-006分层,全模块,tests/test_it01.py,已编写,已测试

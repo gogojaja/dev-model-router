@@ -1,0 +1,17 @@
+需求编号,需求描述,优先级,验收标准,状态
+REQ-FUNC-ROUTER-001,任务复杂度评估(关键词/分类器/混合),Must,输入任务描述输出复杂度等级+分数+置信度,已定义
+REQ-FUNC-ROUTER-002,智能模型选择(Tier-A/Mid/Exec),Must,输入复杂度+任务类型输出模型名+Tier+预估成本,已定义
+REQ-FUNC-ROUTER-003,DAG任务分解,Must,输入任务描述输出DAG JSON(节点+边+关键路径),已定义
+REQ-FUNC-ROUTER-004,分阶段执行(生成→修复→精炼),Must,支持至少3个阶段配置每阶段独立选模型,已定义
+REQ-FUNC-ROUTER-005,预算控制与成本追踪,Must,输入预算上限执行中超预算自动告警+输出成本报告,已定义
+REQ-FUNC-ROUTER-006,结果组装,Must,DAG执行完成后自动组装子结果生成最终报告,已定义
+REQ-FUNC-CLI-001,assess命令,Must,输出复杂度+分数+置信度,已定义
+REQ-FUNC-CLI-002,select命令,Must,输出模型名+Tier,已定义
+REQ-FUNC-CLI-003,decompose命令,Must,输出JSON文件(任务数+关键路径),已定义
+REQ-FUNC-CLI-004,execute命令,Must,输出执行结果+总成本,已定义
+REQ-FUNC-CLI-005,assemble命令,Must,输出最终报告,已定义
+REQ-NFR-PERF-001,评估响应≤5s,Should,95%请求RT≤5s,已定义
+REQ-NFR-PERF-002,并行子任务≥10,Should,支持10+节点并行执行,已定义
+REQ-NFR-COST-001,低成本优先,Must,模型选择优先级:免费→低价→国内稳定→排除国外,已定义
+REQ-NFR-COMP-001,双平台兼容,Must,路径/脚本/配置双平台可执行,已定义
+REQ-NFR-MAIN-001,模块化设计,Must,四大模块独立可单独测试,已定义

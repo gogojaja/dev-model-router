@@ -1,0 +1,17 @@
+需求编号,来源载体,原子行为描述,MoSCoW,分类,验收标准,约束依据,状态
+REQ-FUNC-ROUTER-001,README/项目章程,系统应支持关键词/分类器/混合三种复杂度评估模式评估任务复杂度,Must,功能,输入任务描述输出复杂度等级(高/中/低)+分数(0~1)+置信度(0~1),低成本优先,已收集
+REQ-FUNC-ROUTER-002,README/项目章程,系统应根据复杂度自动选择Tier-A/Tier-Mid/Tier-Exec三层模型,Must,功能,输入复杂度+任务类型输出模型名+Tier+预估成本,低成本优先,已收集
+REQ-FUNC-ROUTER-003,README/项目章程,系统应支持将复杂任务分解为DAG(有向无环图)并按依赖并行执行,Must,功能,输入任务描述输出DAG JSON(节点+边+关键路径),低成本优先,已收集
+REQ-FUNC-ROUTER-004,README/项目章程,系统应支持生成→修复→精炼分阶段执行每阶段可选不同模型,Must,功能,支持至少3个阶段配置每阶段独立选模型,低成本优先,已收集
+REQ-FUNC-ROUTER-005,README/项目章程,系统应支持预算控制与成本追踪,Must,功能,输入预算上限执行中超预算自动告警+输出成本报告,低成本优先,已收集
+REQ-FUNC-ROUTER-006,README/项目章程,系统应支持自动合并子任务结果为最终输出,Must,功能,DAG执行完成后自动组装子结果生成最终报告,低成本优先,已收集
+REQ-FUNC-CLI-001,README,CLI应支持assess命令评估任务复杂度,Must,功能,cli assess命令输出复杂度+分数+置信度,低成本优先,已收集
+REQ-FUNC-CLI-002,README,CLI应支持select命令选择模型,Must,功能,cli select命令输出模型名+Tier,低成本优先,已收集
+REQ-FUNC-CLI-003,README,CLI应支持decompose命令分解任务为DAG,Must,功能,cli decompose命令输出JSON文件(任务数+关键路径),低成本优先,已收集
+REQ-FUNC-CLI-004,README,CLI应支持execute命令执行DAG,Must,功能,cli execute命令输出执行结果+总成本,低成本优先,已收集
+REQ-FUNC-CLI-005,README,CLI应支持assemble命令组装结果,Must,功能,cli assemble命令输出最终报告,低成本优先,已收集
+REQ-NFR-PERF-001,项目章程,单次任务评估响应时间应≤5秒,Should,非功能,95%请求RT≤5s,低成本优先,已收集
+REQ-NFR-PERF-002,项目章程,DAG执行支持并行子任务数≥10,Should,非功能,支持10+节点并行执行,低成本优先,已收集
+REQ-NFR-COST-001,项目章程,优先使用免费/低价模型档,Must,非功能,模型选择优先级:免费→低价→国内稳定→排除国外,低成本优先,已收集
+REQ-NFR-COMP-001,项目章程,应同时支持Windows与macOS双平台,Must,非功能,路径/脚本/配置双平台可执行,低成本优先,已收集
+REQ-NFR-MAIN-001,项目章程,代码应有清晰模块划分router/decomposer/executor/models,Must,非功能,四大模块独立可单独测试,低成本优先,已收集

@@ -1,0 +1,17 @@
+需求编号,需求描述,可测性,风险值,优先级,测试方法
+REQ-FUNC-ROUTER-001,任务复杂度评估,可直接测试,4,P0,等价类+边界值
+REQ-FUNC-ROUTER-002,智能模型选择,可直接测试,4,P0,等价类+决策表
+REQ-FUNC-ROUTER-003,DAG任务分解,可直接测试,6,P0,场景法+边界值
+REQ-FUNC-ROUTER-004,分阶段执行,可直接测试,6,P0,场景法+决策表
+REQ-FUNC-ROUTER-005,预算控制与成本追踪,可直接测试,4,P0,等价类+边界值
+REQ-FUNC-ROUTER-006,结果组装,可直接测试,4,P0,场景法
+REQ-FUNC-CLI-001,assess命令,可直接测试,2,P1,等价类+边界值
+REQ-FUNC-CLI-002,select命令,可直接测试,2,P1,等价类
+REQ-FUNC-CLI-003,decompose命令,可直接测试,2,P1,等价类
+REQ-FUNC-CLI-004,execute命令,可直接测试,2,P1,场景法
+REQ-FUNC-CLI-005,assemble命令,可直接测试,2,P1,场景法
+REQ-NFR-PERF-001,评估响应≤5s,可直接测试,3,P2,性能测试
+REQ-NFR-PERF-002,并行子任务≥10,可直接测试,3,P2,性能测试
+REQ-NFR-COST-001,低成本优先,可直接测试,2,P2,决策表
+REQ-NFR-COMP-001,双平台兼容,可直接测试,1,P3,兼容性测试
+REQ-NFR-MAIN-001,模块化设计,间接测试,1,P3,代码审查

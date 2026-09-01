@@ -11,7 +11,9 @@ from __future__ import annotations
 from dataclasses import dataclass, field
 from typing import Optional, Dict, List, Any
 
-from ..decomposer.dag_builder import DAG, TaskNode, TaskStatus
+import sys, os
+sys.path.insert(0, os.path.dirname(os.path.dirname(os.path.abspath(__file__))))
+from decomposer.dag_builder import DAG, TaskNode, TaskStatus
 
 
 @dataclass

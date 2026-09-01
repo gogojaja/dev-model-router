@@ -1,0 +1,9 @@
+资产编号,资产类型,资产名称,来源阶段,复用次数,状态
+AST-001,代码模块,ComplexityAssessor,IT-01,1,可复用
+AST-002,代码模块,ModelSelector,IT-01,1,可复用
+AST-003,代码模块,DAGBuilder,IT-01,1,可复用
+AST-004,代码模块,StagedExecutor,IT-01,1,可复用
+AST-005,代码模块,Assembler,IT-01,1,可复用
+AST-006,代码模块,CostOptimizer,IT-01,1,可复用
+AST-007,测试脚本,test_it01.py,IT-01,1,可复用
+AST-008,测试用例,测试用例集.csv,IT-01,1,可复用

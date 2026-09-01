@@ -13,9 +13,11 @@ from dataclasses import dataclass, field
 from typing import Optional, Dict, List, Callable, Any
 from datetime import datetime
 
-from ..decomposer.dag_builder import DAG, TaskNode, TaskStatus
-from ..router.model_selector import ModelSelector, ModelTier
-from ..router.complexity import ComplexityAssessor, ComplexityLevel
+import sys, os
+sys.path.insert(0, os.path.dirname(os.path.dirname(os.path.abspath(__file__))))
+from decomposer.dag_builder import DAG, TaskNode, TaskStatus
+from router.model_selector import ModelSelector, ModelTier
+from router.complexity import ComplexityAssessor, ComplexityLevel
 
 
 @dataclass
@@ -124,7 +126,7 @@ class StagedExecutor:
     def _create_execution_plan(self, dag: DAG) -> ExecutionPlan:
         """创建执行计划"""
         # 使用依赖分析器获取执行顺序
-        from ..decomposer.dependency import DependencyAnalyzer
+        from decomposer.dependency import DependencyAnalyzer
         analyzer = DependencyAnalyzer()
         layers = analyzer.get_execution_order(dag)
 

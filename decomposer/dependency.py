@@ -69,7 +69,7 @@ class DependencyAnalyzer:
             critical_path_length=critical_path_length,
             total_tasks=len(dag.nodes),
             independent_tasks=independent_tasks,
-            dependency Chains=dependency_chains,
+            dependency_chains=dependency_chains,
         )
 
     def _detect_cycle(self, dag: DAG) -> bool:

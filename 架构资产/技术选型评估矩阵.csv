@@ -1,0 +1,12 @@
+技术选项,评估维度,评分(1-5),说明
+Python,生态,5,AI SDK最完善、社区活跃
+Python,性能,3,足够（非计算密集型）
+Python,可维护性,5,语法清晰、模块化友好
+Click(CLI),易用性,5,Pythonic、装饰器风格
+Click(CLI),功能,4,子命令+参数完善
+asyncio(并行),性能,5、原生异步、拓扑排序友好
+asyncio(并行),复杂度,3,需理解异步编程
+OpenAI-compatible,兼容性,5,统一接口适配多模型
+OpenAI-compatible,成本,4,支持低价模型接入
+YAML/TOML,可读性,5,配置清晰
+YAML/TOML,解析,4,Python原生支持

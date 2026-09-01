@@ -1,0 +1,8 @@
+接口名称,协议,版本,认证,限流,错误码,说明
+CLI assess,v1,无,无,标准错误码,评估任务复杂度
+CLI select,v1,无,无,标准错误码,选择模型
+CLI decompose,v1,无,无,标准错误码,分解任务为DAG
+CLI execute,v1,无,无,标准错误码,执行DAG
+CLI assemble,v1,无,无,标准错误码,组装结果
+Python API,v1,无,无,标准错误码,程序化调用
+模型API,HTTPS,v1,API Key,重试+退避,模型厂商错误码,外部模型服务

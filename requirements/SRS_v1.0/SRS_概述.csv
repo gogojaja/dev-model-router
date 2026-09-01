@@ -1,0 +1,11 @@
+章节编号,章节名称,内容
+1,引言,本文档定义dev-model-router项目IT-01迭代（核心路由引擎）的需求规格。项目目标：构建多模型分层编排工具，实现高阶模型拆解任务→低阶模型执行子任务→高阶模型组装调试的完整工作流。
+2,总体描述,产品为Python CLI工具+库，用户通过CLI命令或Python API输入任务描述，系统评估复杂度、选择模型、分解任务、分阶段执行、组装结果。使用环境：Python 3.11+，Windows/macOS双平台。
+3,外部接口需求,模型API接口：支持OpenAI/Anthropic/本地模型等API调用；输入：任务描述+参数；输出：模型响应+成本数据。CLI接口：assess/select/decompose/execute/assemble五个子命令。
+4,功能需求,REQ-FUNC-ROUTER-001~006：复杂度评估、模型选择、DAG分解、分阶段执行、成本控制、结果组装。REQ-FUNC-CLI-001~005：五个CLI命令。
+5,性能需求,REQ-NFR-PERF-001：评估响应≤5秒。REQ-NFR-PERF-002：并行子任务≥10。
+6,设计约束,REQ-NFR-COMP-001：双平台兼容。REQ-NFR-COST-001：低成本优先。REQ-NFR-MAIN-001：模块化设计。
+7,质量属性,可维护性：模块独立可测。可扩展性：支持新增模型Tier。可靠性：错误处理+重试机制。
+8,其他需求,文档：README+API文档。许可：MIT。
+9,附录,模型Tier定义：Tier-A(Claude Opus/GPT-4.1)、Tier-Mid(Claude Sonnet/GPT-4.1-mini)、Tier-Exec(Claude Haiku/GPT-4.1-nano)。
+10,追溯矩阵,见追溯矩阵Sheet。

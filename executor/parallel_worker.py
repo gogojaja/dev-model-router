@@ -14,7 +14,9 @@ from dataclasses import dataclass, field
 from typing import Optional, Dict, List, Callable, Any
 from concurrent.futures import ThreadPoolExecutor, Future
 
-from ..decomposer.dag_builder import TaskNode, TaskStatus
+import sys, os
+sys.path.insert(0, os.path.dirname(os.path.dirname(os.path.abspath(__file__))))
+from decomposer.dag_builder import TaskNode, TaskStatus
 
 
 @dataclass
