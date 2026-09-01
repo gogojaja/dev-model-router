@@ -175,6 +175,65 @@ def cmd_models(args):
         print()
 
 
+def cmd_cost(args):
+    """查看成本报告"""
+    from .router.cost_optimizer import CostOptimizer
+
+    optimizer = CostOptimizer()
+    report = optimizer.get_daily_report()
+
+    print("# 成本报告")
+    print(f"## 今日")
+    print(f"- 总成本: ${report.total_cost:.4f}")
+    print(f"- 预算使用率: {report.budget_utilization:.1%}")
+    print(f"- 是否超支: {'是' if report.is_over_budget else '否'}")
+
+    if report.by_tier:
+        print(f"\n## 按 Tier")
+        for tier, cost in report.by_tier.items():
+            print(f"- {tier}: ${cost:.4f}")
+
+    if report.by_model:
+        print(f"\n## 按模型")
+        for model, cost in report.by_model.items():
+            print(f"- {model}: ${cost:.4f}")
+
+    if args.json:
+        print(json.dumps({
+            "total_cost": report.total_cost,
+            "budget_utilization": report.budget_utilization,
+            "is_over_budget": report.is_over_budget,
+            "by_tier": report.by_tier,
+            "by_model": report.by_model,
+        }, indent=2, ensure_ascii=False))
+
+
+def cmd_config(args):
+    """管理配置"""
+    import os
+
+    config = {
+        "daily_budget": os.environ.get("DAILY_BUDGET", "10.0"),
+        "monthly_budget": os.environ.get("MONTHLY_BUDGET", "200.0"),
+        "default_mode": os.environ.get("DEFAULT_MODE", "keyword"),
+        "cache_ttl": os.environ.get("CACHE_TTL", "3600"),
+        "max_cache_size": os.environ.get("MAX_CACHE_SIZE", "1000"),
+    }
+
+    if args.action == "list":
+        print("# 配置列表")
+        for key, value in config.items():
+            print(f"{key} = {value}")
+    elif args.action == "get":
+        if args.key in config:
+            print(f"{args.key} = {config[args.key]}")
+        else:
+            print(f"未知配置项: {args.key}")
+    elif args.action == "set":
+        print(f"设置 {args.key} = {args.value}")
+        print("提示: 实际设置请通过环境变量或 .env 文件")
+
+
 def main():
     parser = argparse.ArgumentParser(
         description="dev-model-router: 多模型分层编排工具",
@@ -224,6 +283,18 @@ def main():
     models_parser.add_argument("--tier", choices=["tier-a", "tier-mid", "tier-exec"])
     models_parser.add_argument("--provider", choices=["anthropic", "openai", "google", "deepseek"])
     models_parser.set_defaults(func=cmd_models)
+
+    # cost 命令
+    cost_parser = subparsers.add_parser("cost", help="查看成本报告")
+    cost_parser.add_argument("--json", action="store_true")
+    cost_parser.set_defaults(func=cmd_cost)
+
+    # config 命令
+    config_parser = subparsers.add_parser("config", help="管理配置")
+    config_parser.add_argument("action", choices=["list", "get", "set"], help="操作类型")
+    config_parser.add_argument("--key", help="配置键")
+    config_parser.add_argument("--value", help="配置值")
+    config_parser.set_defaults(func=cmd_config)
 
     args = parser.parse_args()
 

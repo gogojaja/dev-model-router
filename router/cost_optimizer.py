@@ -253,3 +253,38 @@ class CostOptimizer:
                 task_type=item["task_type"],
                 task_id=item.get("task_id"),
             ))
+
+    def predict_cost(self, task_count: int, avg_input_tokens: int = 1000, avg_output_tokens: int = 500) -> Dict:
+        """
+        成本预测（IT-02增强）
+
+        Args:
+            task_count: 任务数量
+            avg_input_tokens: 平均输入token数
+            avg_output_tokens: 平均输出token数
+
+        Returns:
+            Dict: 预测结果
+        """
+        from .model_selector import ModelSelector
+        selector = ModelSelector()
+
+        tiers = ["tier-a", "tier-mid", "tier-exec"]
+        predictions = {}
+
+        for tier_name in tiers:
+            tier = ModelTier(tier_name)
+            profiles = selector.profiles.get(tier, [])
+            if profiles:
+                avg_input_cost = sum(p.cost_per_1k_input for p in profiles) / len(profiles)
+                avg_output_cost = sum(p.cost_per_1k_output for p in profiles) / len(profiles)
+                per_task = avg_input_cost * (avg_input_tokens / 1000) + avg_output_cost * (avg_output_tokens / 1000)
+                predictions[tier_name] = round(per_task * task_count, 4)
+
+        return {
+            "task_count": task_count,
+            "avg_input_tokens": avg_input_tokens,
+            "avg_output_tokens": avg_output_tokens,
+            "predictions_by_tier": predictions,
+            "estimated_total": predictions.get("tier-mid", 0),
+        }

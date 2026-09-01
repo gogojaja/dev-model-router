@@ -211,3 +211,53 @@ class StagedExecutor:
             node_id for node_id, node in dag.nodes.items()
             if node.status == TaskStatus.FAILED
         ]
+
+    def execute_with_stages(
+        self,
+        dag: DAG,
+        stages: List[Dict],
+        budget: Optional[float] = None,
+    ) -> ExecutionResult:
+        """
+        自定义阶段执行（IT-02增强）
+
+        Args:
+            dag: 任务依赖图
+            stages: 阶段配置列表 [{"name": "planning", "model": "tier-a", "tasks": ["plan"]}, ...]
+            budget: 预算上限
+
+        Returns:
+            ExecutionResult: 执行结果
+        """
+        plan = self._create_execution_plan(dag)
+
+        if budget and plan.total_estimated_cost > budget:
+            return ExecutionResult(
+                task_id="root",
+                status=TaskStatus.FAILED,
+                error=f"预估成本 ${plan.total_estimated_cost:.2f} 超出预算 ${budget:.2f}",
+            )
+
+        executed_tasks = set()
+        for stage in stages:
+            stage_tasks = [t for t in stage.get("tasks", []) if t in dag.nodes]
+            for task_id in stage_tasks:
+                self._execute_task(task_id, dag, plan)
+                executed_tasks.add(task_id)
+            if dag.is_failed:
+                return ExecutionResult(
+                    task_id="root",
+                    status=TaskStatus.FAILED,
+                    error=f"阶段 {stage.get('name', 'unknown')} 执行失败",
+                )
+
+        all_executed = all(
+            dag.nodes[tid].status in (TaskStatus.COMPLETED, TaskStatus.SKIPPED)
+            for tid in executed_tasks
+        )
+        return ExecutionResult(
+            task_id="root",
+            status=TaskStatus.COMPLETED if all_executed else TaskStatus.FAILED,
+            result={"total_cost": dag.total_cost, "tasks_completed": len(executed_tasks)},
+            cost=dag.total_cost,
+        )

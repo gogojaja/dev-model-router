@@ -149,3 +149,46 @@ class ParallelWorker:
             "status": "completed",
             "output": f"Task {task.id} executed",
         }
+
+    def execute_with_cache(
+        self,
+        tasks: List[TaskNode],
+        model_selections: Optional[Dict[str, Any]] = None,
+        cache: Optional[Any] = None,
+    ) -> List[WorkerResult]:
+        """
+        带缓存的并行执行（IT-02增强）
+
+        Args:
+            tasks: 任务列表
+            model_selections: 模型选择结果
+            cache: 结果缓存
+
+        Returns:
+            List[WorkerResult]: 执行结果列表
+        """
+        results = []
+        tasks_to_execute = []
+
+        for task in tasks:
+            if cache:
+                cached = cache.get(cache.make_key(task.description, task_type=task.task_type))
+                if cached is not None:
+                    results.append(WorkerResult(
+                        task_id=task.id,
+                        status=TaskStatus.COMPLETED,
+                        result=cached,
+                    ))
+                    continue
+            tasks_to_execute.append(task)
+
+        if tasks_to_execute:
+            new_results = self.execute(tasks_to_execute, model_selections)
+            for result in new_results:
+                if result.status == TaskStatus.COMPLETED and cache:
+                    task = next((t for t in tasks_to_execute if t.id == result.task_id), None)
+                    if task:
+                        cache.set(cache.make_key(task.description, task_type=task.task_type), result.result)
+            results.extend(new_results)
+
+        return results

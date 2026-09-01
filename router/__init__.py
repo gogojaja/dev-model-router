@@ -12,6 +12,7 @@ Router 层：任务复杂度评估 + 模型选择 + 成本优化
 from .complexity import ComplexityAssessor, ComplexityLevel
 from .model_selector import ModelSelector, ModelTier
 from .cost_optimizer import CostOptimizer
+from .cache import ResultCache
 
 __all__ = [
     "ComplexityAssessor",
@@ -19,4 +20,5 @@ __all__ = [
     "ModelSelector",
     "ModelTier",
     "CostOptimizer",
+    "ResultCache",
 ]

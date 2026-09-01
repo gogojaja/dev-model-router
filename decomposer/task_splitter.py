@@ -138,6 +138,76 @@ class TaskSplitter:
 
         return subtasks
 
+    def split_smart(
+        self,
+        task_description: str,
+        complexity: str = "medium",
+        strategy: SplitStrategy = SplitStrategy.HYBRID,
+    ) -> List[SubTask]:
+        """
+        智能任务拆分（IT-02增强）
+
+        Args:
+            task_description: 任务描述
+            complexity: 复杂度级别 (low/medium/high)
+            strategy: 拆分策略
+
+        Returns:
+            List[SubTask]: 子任务列表
+        """
+        task_type = self._detect_task_type(task_description)
+
+        # 根据策略选择模板
+        if strategy == SplitStrategy.HYBRID:
+            if complexity == "high":
+                template = self._get_hybrid_high_template(task_type)
+            elif complexity == "low":
+                template = self._get_hybrid_low_template(task_type)
+            else:
+                template = self.SPLIT_TEMPLATES.get(task_type, self.SPLIT_TEMPLATES["code_generation"])
+        else:
+            template = self.SPLIT_TEMPLATES.get(task_type, self.SPLIT_TEMPLATES["code_generation"])
+
+        subtasks = []
+        for i, task in enumerate(template):
+            subtasks.append(SubTask(
+                id=task["id"],
+                name=task["name"],
+                description=f"{task['name']}: {task_description}",
+                task_type=task["task_type"],
+                dependencies=task["dependencies"],
+                estimated_complexity=complexity,
+                estimated_cost=0.0,
+            ))
+
+        return subtasks
+
+    def _get_hybrid_high_template(self, task_type: str) -> List[Dict]:
+        """高复杂度混合模板"""
+        if task_type == "code_generation":
+            return [
+                {"id": "requirements", "name": "需求分析", "task_type": "planning", "dependencies": []},
+                {"id": "architecture", "name": "架构设计", "task_type": "architecture", "dependencies": ["requirements"]},
+                {"id": "interface", "name": "接口定义", "task_type": "architecture", "dependencies": ["architecture"]},
+                {"id": "core_impl", "name": "核心实现", "task_type": "code_generation", "dependencies": ["interface"]},
+                {"id": "util_impl", "name": "工具实现", "task_type": "code_generation", "dependencies": ["interface"]},
+                {"id": "unit_test", "name": "单元测试", "task_type": "testing", "dependencies": ["core_impl", "util_impl"]},
+                {"id": "integration", "name": "集成测试", "task_type": "testing", "dependencies": ["unit_test"]},
+                {"id": "review", "name": "代码审查", "task_type": "review", "dependencies": ["integration"]},
+                {"id": "docs", "name": "文档编写", "task_type": "documentation", "dependencies": ["core_impl"]},
+            ]
+        return self.SPLIT_TEMPLATES.get(task_type, self.SPLIT_TEMPLATES["code_generation"])
+
+    def _get_hybrid_low_template(self, task_type: str) -> List[Dict]:
+        """低复杂度混合模板"""
+        if task_type == "code_generation":
+            return [
+                {"id": "quick_plan", "name": "快速规划", "task_type": "planning", "dependencies": []},
+                {"id": "implement", "name": "实现", "task_type": "code_generation", "dependencies": ["quick_plan"]},
+                {"id": "verify", "name": "验证", "task_type": "testing", "dependencies": ["implement"]},
+            ]
+        return self.SPLIT_TEMPLATES.get(task_type, self.SPLIT_TEMPLATES["code_generation"])
+
     def _detect_task_type(self, task_description: str) -> str:
         """检测任务类型"""
         task_lower = task_description.lower()

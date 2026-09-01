@@ -15,3 +15,12 @@ REQ-NFR-PERF-002,并行子任务≥10,ADR-003 asyncio,并行执行,tests/test_it
 REQ-NFR-COST-001,低成本优先,ADR-007低成本,模型选择,tests/test_it01.py,已编写,已测试
 REQ-NFR-COMP-001,双平台兼容,ADR-001 Python,全模块,tests/test_it01.py,已编写,已测试
 REQ-NFR-MAIN-001,模块化设计,ADR-006分层,全模块,tests/test_it01.py,已编写,已测试
+REQ-FUNC-ROUTER-003-ENH,智能任务拆分,ADR-006模块化,task_splitter.py split_smart,tests/test_it02.py,已编写,已测试
+REQ-FUNC-ROUTER-004-ENH,自定义阶段配置,ADR-003并行,staged_executor.py execute_with_stages,tests/test_it02.py,已编写,已测试
+REQ-FUNC-ROUTER-005-ENH,成本预测,ADR-007低成本,cost_optimizer.py predict_cost,tests/test_it02.py,已编写,已测试
+REQ-FUNC-ROUTER-007-NEW,任务重试机制,ADR-003 asyncio,parallel_worker.py execute_with_retry,tests/test_it02.py,已编写,已测试
+REQ-FUNC-ROUTER-008-NEW,结果缓存,ADR-006模块化,cache.py ResultCache,tests/test_it02.py,已编写,已测试
+REQ-FUNC-CLI-006-NEW,cost命令,ADR-002 CLI,cli.py cmd_cost,tests/test_it02.py,已编写,已测试
+REQ-FUNC-CLI-007-NEW,config命令,ADR-002 CLI,cli.py cmd_config,tests/test_it02.py,已编写,已测试
+REQ-NFR-PERF-003-NEW,缓存命中率≥60%,ADR-006模块化,cache.py,tests/test_it02.py,已编写,已测试
+REQ-NFR-RELI-001-NEW,任务成功率≥95%,ADR-003 asyncio,parallel_worker.py,tests/test_it02.py,已编写,已测试
