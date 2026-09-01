@@ -2,7 +2,7 @@
 业务目标对齐,通过,架构支持多模型分层编排核心目标
 质量属性满足,通过,性能/可维护性/可扩展性/成本/兼容性均已覆盖
 风险识别,通过,5项风险已识别且有应对措施
-技术选型合理,通过,Python+Click+asyncio+OpenAI-compatible均为合理选择
+技术选型合理,通过,Python+argparse+ThreadPoolExecutor+OpenAI-compatible均为合理选择
 七原则合规,通过,模块化/高内聚/松耦合/抽象/信息隐藏/单点控制/ISO25010全通过
 4+1视图完整,通过,逻辑/进程/开发/物理视图+场景齐全
 C4模型完整,通过,Context/Container/Component/Code四层完整

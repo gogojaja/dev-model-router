@@ -1,10 +1,10 @@
 #!/usr/bin/env python3
 """IT-01 测试执行脚本"""
 import sys
-import os
 import time
+from pathlib import Path
 
-sys.path.insert(0, '/Volumes/BR256G/dev-model-router')
+sys.path.insert(0, str(Path(__file__).resolve().parent.parent))
 
 from router.complexity import ComplexityAssessor, ComplexityLevel
 from router.model_selector import ModelSelector, ModelTier
@@ -22,6 +22,7 @@ def record(case_id, desc, expected, actual, passed):
     status = "PASS" if passed else "FAIL"
     results.append({"case_id": case_id, "desc": desc, "expected": expected, "actual": actual, "status": status})
     print(f"[{status}] {case_id}: {desc}")
+    assert passed, f"{case_id}: {desc} — expected {expected}, got {actual}"
 
 
 def test_case_001():
@@ -130,7 +131,7 @@ def test_case_013():
 def test_case_014():
     assessor = ComplexityAssessor()
     result = assessor.assess("测试任务")
-    record("TC-014", "assess命令", "输出复杂度", f"level={result.level.value}", True)
+    record("TC-014", "assess命令", "level有效", f"level={result.level.value}", result.level in (ComplexityLevel.LOW, ComplexityLevel.MEDIUM, ComplexityLevel.HIGH))
 
 
 def test_case_015():
