@@ -14,7 +14,8 @@ from decomposer.dependency import DependencyAnalyzer
 from executor.staged_executor import StagedExecutor, ExecutionResult
 from executor.assembler import Assembler, AssemblyResult
 from executor.parallel_worker import ParallelWorker, WorkerConfig
-from models.registry import ModelRegistry, ModelInfo
+from models.registry import ModelRegistry
+from router.model_selector import ModelProfile
 
 
 def test_complexity_assessor():

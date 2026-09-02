@@ -6,9 +6,10 @@
 管理模型注册表和性能档案。
 """
 
-from .registry import ModelRegistry, ModelInfo
+from .registry import ModelRegistry
+from router.model_selector import ModelProfile
 
 __all__ = [
     "ModelRegistry",
-    "ModelInfo",
+    "ModelProfile",
 ]

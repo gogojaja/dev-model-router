@@ -93,10 +93,6 @@ class ResultCache:
         return self._hits / total if total > 0 else 0.0
 
     def _evict(self):
-        """淘汰过期条目"""
-        expired_keys = [k for k, v in self._cache.items() if v.is_expired]
-        for key in expired_keys:
-            del self._cache[key]
-        if len(self._cache) >= self.max_size:
-            oldest_key = min(self._cache, key=lambda k: self._cache[k].created_at)
-            del self._cache[oldest_key]
+        """淘汰最老条目（O(1)：Python 3.7+ dict 保持插入顺序）"""
+        if self._cache:
+            self._cache.pop(next(iter(self._cache)))

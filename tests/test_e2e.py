@@ -79,7 +79,7 @@ def test_e2e_high_complexity(tmp_path):
     assert selection.tier == ModelTier.A
 
     builder = DAGBuilder()
-    dag = builder.build(task)
+    dag = builder.build(task, context={"complexity": "high"})
     assert len(dag.nodes) >= 6
 
     executor = StagedExecutor()

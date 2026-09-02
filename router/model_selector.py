@@ -58,96 +58,19 @@ class ModelSelector:
         print(selection.model.name)  # "Claude Opus"
     """
 
-    # 默认模型档案库
-    DEFAULT_PROFILES: Dict[ModelTier, List[ModelProfile]] = {
-        ModelTier.A: [
-            ModelProfile(
-                name="Claude Opus",
-                tier=ModelTier.A,
-                provider="anthropic",
-                model_id="claude-opus-4-20250514",
-                cost_per_1k_input=0.015,
-                cost_per_1k_output=0.075,
-                max_tokens=32000,
-                pass_at_1=0.92,
-                fix_at_1=0.88,
-                strengths=["complex_reasoning", "architecture", "debugging", "code_generation"],
-            ),
-            ModelProfile(
-                name="GPT-4.1",
-                tier=ModelTier.A,
-                provider="openai",
-                model_id="gpt-4.1",
-                cost_per_1k_input=0.002,
-                cost_per_1k_output=0.008,
-                max_tokens=32000,
-                pass_at_1=0.90,
-                fix_at_1=0.85,
-                strengths=["general", "creative", "code_generation"],
-            ),
-        ],
-        ModelTier.MID: [
-            ModelProfile(
-                name="Claude Sonnet",
-                tier=ModelTier.MID,
-                provider="anthropic",
-                model_id="claude-sonnet-4-20250514",
-                cost_per_1k_input=0.003,
-                cost_per_1k_output=0.015,
-                max_tokens=16000,
-                pass_at_1=0.85,
-                fix_at_1=0.80,
-                strengths=["code_generation", "testing", "documentation"],
-            ),
-            ModelProfile(
-                name="GPT-4.1-mini",
-                tier=ModelTier.MID,
-                provider="openai",
-                model_id="gpt-4.1-mini",
-                cost_per_1k_input=0.0004,
-                cost_per_1k_output=0.0016,
-                max_tokens=16000,
-                pass_at_1=0.82,
-                fix_at_1=0.78,
-                strengths=["code_generation", "testing"],
-            ),
-        ],
-        ModelTier.EXEC: [
-            ModelProfile(
-                name="Claude Haiku",
-                tier=ModelTier.EXEC,
-                provider="anthropic",
-                model_id="claude-haiku-3-5-20241022",
-                cost_per_1k_input=0.0008,
-                cost_per_1k_output=0.004,
-                max_tokens=8000,
-                pass_at_1=0.75,
-                fix_at_1=0.70,
-                strengths=["simple_tasks", "formatting", "batch_processing"],
-            ),
-            ModelProfile(
-                name="GPT-4.1-nano",
-                tier=ModelTier.EXEC,
-                provider="openai",
-                model_id="gpt-4.1-nano",
-                cost_per_1k_input=0.0001,
-                cost_per_1k_output=0.0004,
-                max_tokens=8000,
-                pass_at_1=0.70,
-                fix_at_1=0.65,
-                strengths=["simple_tasks", "formatting"],
-            ),
-        ],
-    }
-
     def __init__(self, profiles: Optional[Dict[ModelTier, List[ModelProfile]]] = None):
         """
         初始化模型选择器
 
         Args:
-            profiles: 自定义模型档案库（可选，默认使用内置档案）
+            profiles: 自定义模型档案库（可选，默认从 ModelRegistry 加载）
         """
-        self.profiles = profiles or self.DEFAULT_PROFILES
+        if profiles is not None:
+            self.profiles = profiles
+        else:
+            from models.registry import ModelRegistry
+            registry = ModelRegistry()
+            self.profiles = registry.to_profiles_by_tier()
 
     def select(
         self,

@@ -213,62 +213,25 @@ class DAGBuilder:
         Returns:
             DAG: 任务依赖图
         """
-        # 默认实现：将任务拆分为标准阶段
+        from .task_splitter import TaskSplitter, SplitStrategy
+
         dag = DAG(root_task=task_description)
 
-        # 定义标准任务模板
-        tasks = [
-            {
-                "id": "plan",
-                "name": "规划",
-                "description": f"分析需求并制定实现计划：{task_description}",
-                "task_type": "planning",
-                "dependencies": [],
-            },
-            {
-                "id": "design",
-                "name": "设计",
-                "description": "设计架构和接口",
-                "task_type": "architecture",
-                "dependencies": ["plan"],
-            },
-            {
-                "id": "implement",
-                "name": "实现",
-                "description": "编写代码实现",
-                "task_type": "code_generation",
-                "dependencies": ["design"],
-            },
-            {
-                "id": "test",
-                "name": "测试",
-                "description": "编写和执行单元测试",
-                "task_type": "testing",
-                "dependencies": ["implement"],
-            },
-            {
-                "id": "review",
-                "name": "审查",
-                "description": "代码审查和质量检查",
-                "task_type": "review",
-                "dependencies": ["test"],
-            },
-            {
-                "id": "document",
-                "name": "文档",
-                "description": "编写文档和注释",
-                "task_type": "documentation",
-                "dependencies": ["implement"],
-            },
-        ]
+        complexity = (context or {}).get("complexity", "medium")
+        splitter = TaskSplitter()
+        subtasks = splitter.split_smart(
+            task_description,
+            complexity=complexity,
+            strategy=SplitStrategy.HYBRID,
+        )
 
-        for task in tasks:
-            dag.nodes[task["id"]] = TaskNode(
-                id=task["id"],
-                name=task["name"],
-                description=task["description"],
-                task_type=task["task_type"],
-                dependencies=task["dependencies"],
+        for st in subtasks:
+            dag.nodes[st.id] = TaskNode(
+                id=st.id,
+                name=st.name,
+                description=st.description,
+                task_type=st.task_type,
+                dependencies=st.dependencies,
             )
 
         return dag
